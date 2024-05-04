@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (landSizeValue < 1000) {
                   template = `${failString1}`;
                 } else {
-                  template = `Your estimate is valued at /n ${
+                  template = `Your estimate is valued at \n ${
                     Math.trunc(landSizeValue / num1 * num2) / 10
                   }K€ - ${Math.trunc(landSizeValue / num3 * num4) / 10}K€`;
                 }
