@@ -61,7 +61,7 @@ let SHEET_ID = "1q1iVjLgC1sILKSa7Sl1uQ5Qdl2G5ToJPPTEa0g3cNLY";
             } else {
               template = `${estimateString} ${landSizeValue * num1}K€ - ${
                 landSizeValue * num2
-              }K€`;
+              }K€ zzgl. Mehrwertsteuer pro Jahr.`;
             }
             break;
           case "2":
@@ -69,9 +69,9 @@ let SHEET_ID = "1q1iVjLgC1sILKSa7Sl1uQ5Qdl2G5ToJPPTEa0g3cNLY";
             if (landSizeValue < 5) {
               template = `${failString2}`;
             } else {
-              template = `Your estimate is valued at \n${
+              template = `Ihre voraussichtliche Pacht beträgt \n${
                 landSizeValue * num3
-              }K€ - ${landSizeValue * num4}K€`;
+              }K€ - ${landSizeValue * num4}K€ zzgl. Mehrwertsteuer pro Jahr.`;
             }
             break;
           default:
