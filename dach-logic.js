@@ -60,9 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (landSizeValue < 1000) {
                   template = `${failString1}`;
                 } else {
-                  template = `Your estimate is valued at \n ${
+                  template = `Ihre voraussichtliche Pacht beträgt \n ${
                     Math.trunc(landSizeValue / num1 * num2) / 10
-                  }K€ - ${Math.trunc(landSizeValue / num3 * num4) / 10}K€`;
+                  }K€ - ${Math.trunc(landSizeValue / num3 * num4) / 10}K€ zzgl. Mehrwertsteuer pro Jahr.`;
                 }
                 break;
               default:
