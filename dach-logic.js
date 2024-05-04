@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
       failString1 = String(data.table.rows[2].c[0].v);
 
       // Now you can access the equation data here
-      console.log(num1, num2, num3, num4);
+      console.log(num1, num2, num3, num4, failString1);
 
       // Listen for click events on the button with a data-form attribute containing "next-btn"
       document
