@@ -69,9 +69,9 @@ let SHEET_ID = "1q1iVjLgC1sILKSa7Sl1uQ5Qdl2G5ToJPPTEa0g3cNLY";
             if (landSizeValue < 5) {
               template = `${failString2}`;
             } else {
-              template = `Ihre voraussichtliche Pacht beträgt \n${
+              template = `Ihre Einmalpacht wurde auf einen Betrag zwischen \n${
                 landSizeValue * num3
-              }000€ - ${landSizeValue * num4}000€ zzgl. Mehrwertsteuer pro Jahr.`;
+              }000€ - ${landSizeValue * num4}000€ berechnet`;
             }
             break;
           default:
