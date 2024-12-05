@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                   template = `Ihre voraussichtliche Pacht beträgt \n ${
                     Math.trunc(landSizeValue / num2 * num1) * 2
-                  }000€ - ${Math.trunc(landSizeValue / num4 * num3) * 2}.000€ zzgl. Mehrwertsteuer pro Jahr.`;
+                  }.000€ - ${Math.trunc(landSizeValue / num4 * num3) * 2}.000€ zzgl. Mehrwertsteuer pro Jahr.`;
                 }
                 break;
               default:
