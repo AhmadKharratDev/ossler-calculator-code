@@ -1,103 +1,97 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const SHEET_ID = "1q1iVjLgC1sILKSa7Sl1uQ5Qdl2G5ToJPPTEa0g3cNLY";
-  const SHEET_TITLE = "Equations";
-  const SHEET_RANGE = "E2:F4";
 
-  let num1, num2, num3, num4, failString1;
+let SHEET_ID = "1q1iVjLgC1sILKSa7Sl1uQ5Qdl2G5ToJPPTEa0g3cNLY";
+  let SHEET_TITLE = "Equations";
+  let SHEET_RANGE = "E13:F17";
 
-  const FULL_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_TITLE}&range=${SHEET_RANGE}`;
+  let num1;
+  let num2;
+  let num3;
+  let num4;
+  let estimateString;
+  let failString1;
+  let failString2;
 
-  // Fetch data from the Google Sheet
+  let FULL_URL = ('https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?sheet=' + SHEET_TITLE +'&range=' + SHEET_RANGE);
+
   fetch(FULL_URL)
-    .then((res) => res.text())
-    .then((rep) => {
-      try {
-        const data = JSON.parse(rep.slice(47, -2)); // Parse the JSON response
-        console.log("Fetched data:", data);
+    .then(res => res.text()) // Convert the response to text
+    .then(rep => {
+      // Parse the JSON data from the response
+      let data = JSON.parse(rep.slice(47, -2)); // Adjust the slice according to your response structure
 
-        // Extract values from the response
-        num1 = Number(data.table.rows[0].c[0].v);
-        num2 = Number(data.table.rows[0].c[1].v);
-        num3 = Number(data.table.rows[1].c[0].v);
-        num4 = Number(data.table.rows[1].c[1].v);
-        failString1 = String(data.table.rows[2].c[0].v);
+      
+      num1 = Number(data.table.rows[0].c[0].v);
+      num2 = Number(data.table.rows[0].c[1].v);
+      num3 = Number(data.table.rows[1].c[0].v);
+      num4 = Number(data.table.rows[1].c[1].v);
+      estimateString = String(data.table.rows[2].c[0].v)
+      failString1 = String(data.table.rows[3].c[0].v)
+      failString2 = String(data.table.rows[4].c[0].v)
+      // Now you can access the equation data here
 
-        console.log("Loaded values:", { num1, num2, num3, num4, failString1 });
+  // Listen for click events on the button with a data-form attribute containing "next-btn"
+  document
+    .querySelector('[data-form*="next-btn"]')
+    .addEventListener("click", function () {
+      // Get the value of the land size input
+      const landSizeInput = document.getElementById("landSizeInput");
+      const landSizeValue = landSizeInput.value.trim(); // Trim whitespace from the input value
 
-        // Add event listener to the button
-        const button = document.querySelector('[data-form*="next-btn"]');
-        if (!button) {
-          console.error("Button with [data-form*='next-btn'] not found!");
-          return;
+      // Get the selected option from the select input
+      const selectInput = document.getElementById("artSelectFreiflache");
+      const selectedOption = selectInput.value;
+
+      // Check if the input values are not empty
+      if (landSizeValue !== "" && selectedOption !== "") {
+        // Store the values in sessionStorage
+        sessionStorage.setItem("landSizeValue", landSizeValue);
+        sessionStorage.setItem("selectedOption", selectedOption);
+
+        // Select the element where you want to display the data on the new page
+        const estimateDisplayNum =
+          document.getElementById("estimateDisplayNum");
+
+        // Construct the appropriate template based on the selected option and land size value
+        let template;
+        switch (selectedOption) {
+          case "1":
+            if (landSizeValue < 10) {
+              template = `${failString1}`;
+            } else {
+              template = `${estimateString} ${landSizeValue * num1}000€ - ${
+                landSizeValue * num2
+              }000€ zzgl. Mehrwertsteuer pro Jahr.`;
+            }
+            break;
+          case "2":
+          case "3":
+            if (landSizeValue < 5) {
+              template = `${failString2}`;
+            } else {
+              template = `Ihre Einmalpacht wurde auf einen Betrag zwischen \n${
+                landSizeValue * num3
+              }000€ - ${landSizeValue * num4}000€ berechnet`;
+            }
+            break;
+          default:
+            template = `No estimate available.`;
         }
 
-        button.addEventListener("click", function () {
-          // Get input values
-          const landSizeInput = document.getElementById("landSizeInput");
-          const selectInput = document.getElementById("Type-of-Lease-Dachflache");
-
-          if (!landSizeInput || !selectInput) {
-            console.error("Required input elements not found!");
-            return;
-          }
-
-          const landSizeValue = Number(landSizeInput.value.trim());
-          const selectedOption = selectInput.value;
-
-          console.log("Inputs:", { landSizeValue, selectedOption });
-
-          if (landSizeValue && selectedOption) {
-            // Store values in sessionStorage
-            sessionStorage.setItem("landSizeValue", landSizeValue);
-            sessionStorage.setItem("selectedOption", selectedOption);
-
-            const estimateDisplayNum = document.getElementById("estimateDisplayNum");
-            if (!estimateDisplayNum) {
-              console.error("Element with id 'estimateDisplayNum' not found!");
-              return;
-            }
-
-            // Calculate the estimate
-            let template;
-            switch (selectedOption) {
-              case "1":
-              case "2":
-              case "3":
-                if (landSizeValue < 1000) {
-                  template = failString1;
-                } else {
-                  const lowerEstimate = Math.trunc((landSizeValue / num2) * num1) * 2000;
-                  const upperEstimate = Math.trunc((landSizeValue / num4) * num3) * 2000;
-
-                  // Format numbers with toLocaleString
-                  const lowerEstimateFormatted = lowerEstimate.toLocaleString();
-                  const upperEstimateFormatted = upperEstimate.toLocaleString();
-
-                  template = `Ihre voraussichtliche Pacht beträgt \n ${lowerEstimateFormatted}€ - ${upperEstimateFormatted}€ zzgl. Mehrwertsteuer pro Jahr.`;
-                }
-                break;
-              default:
-                template = `No estimate available.`;
-            }
-
-            // Display the result
-            estimateDisplayNum.textContent = template;
-            console.log("Displayed template:", template);
-          } else {
-            console.log("Missing or invalid input values!");
-          }
+        // Display the template
+        estimateDisplayNum.textContent = template;
+      } else {
+        return;
+             }
         });
-      } catch (error) {
-        console.error("Error processing data:", error);
-      }
     })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
+    .catch(error => {
+      console.error('Error:', error);
     });
 
-  // Clear session storage on page unload
+  // Listen for the beforeunload event
   window.addEventListener("beforeunload", function () {
+    // Clear sessionStorage
     sessionStorage.clear();
-    console.log("Session storage cleared");
   });
 });
