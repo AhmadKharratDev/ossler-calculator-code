@@ -59,9 +59,9 @@ let SHEET_ID = "1q1iVjLgC1sILKSa7Sl1uQ5Qdl2G5ToJPPTEa0g3cNLY";
             if (landSizeValue < 10) {
               template = `${failString1}`;
             } else {
-              template = `${estimateString} ${landSizeValue * num1}000€ - ${
+              template = `${estimateString} ${landSizeValue * num1}.000€ - ${
                 landSizeValue * num2
-              }000€ zzgl. Mehrwertsteuer pro Jahr.`;
+              }.000€ zzgl. Mehrwertsteuer pro Jahr.`;
             }
             break;
           case "2":
